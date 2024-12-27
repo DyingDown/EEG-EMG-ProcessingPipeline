@@ -24,6 +24,9 @@ function processRawDataFile(filepath, isPeakPoint)
     
     [TL_a, TL_b, startPoints] = modifyStartPoints(EMGData, EEGData, isPeakPoint, filepath);
 
+    create_event_info(filepath, TL_a, TL_b, startPoints);
+
+
     [cutEMG, cutEEG] = cutData(EMGData, EMGData, filepath, TL_a, TL_b, startPoints, isPeakPoint);
     saveCuttedData([cutEMG, cutEEG]', filepath);
 end
@@ -160,20 +163,21 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
     % 创建按钮：提交并更新图形
     submit_button = uibutton(grid, 'Text', 'Save & Update figure', 'ButtonPushedFcn', @(btn, event) update_variables_and_plot());
     % do not show some channel on the figure
-    updatetBanned = uibutton(grid, 'Text', 'Update Banned', 'ButtonPushedFcn', @(btn, event) updateBannedChann());
-    % 创建按钮：关闭表单和图形窗口
-    close_button = uibutton(grid, 'Text', 'Close & Save events', 'ButtonPushedFcn', @(btn, event) close_window());
+    updatetBanned = uibutton(grid, 'Text', 'Update Banned Channel', 'ButtonPushedFcn', @(btn, event) updateBannedChann());
     % view cutted waves
-    view_cutted_button = uibutton(grid, 'Text', 'View Parted Figure', 'ButtonPushedFcn', @(btn, event) view_cutted());
+    view_cutted_button = uibutton(grid, 'Text', 'View Cutted Figure', 'ButtonPushedFcn', @(btn, event) view_cutted());
+
+    % 创建按钮：关闭表单和图形窗口
+    close_button = uibutton(grid, 'Text', 'Close', 'BackgroundColor', '#2b75a6' ,'ButtonPushedFcn', @(btn, event) close_window());
     % discard this file
-    finished_button = uibutton(grid, 'Text', 'Mark Finish Permenantly', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file('permentanly mark file' + filename + 'as finished and will never show up again', "finished"));
+    finished_button = uibutton(grid, 'Text', 'Mark Finish Permenantly', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file('permentanly mark file ' + filename + ' as finished and will never show up again', "finished"));
 
     discard_button = uibutton(grid, 'Text', 'Discard this file', 'BackgroundColor', '#c42b1c', 'ButtonPushedFcn', @(btn, event) move_file('remove file ' + filename + ' from original data files', "discard"));
     
     submit_button.Layout.Column = 1;  % 占第1列
-    close_button.Layout.Column = 2;   % 占第2列
-    updatetBanned.Layout.Column = 3;  % 跨3列
-    view_cutted_button.Layout.Column = 1;
+    updatetBanned.Layout.Column = 2;  % 跨3列
+    view_cutted_button.Layout.Column = 3;
+    close_button.Layout.Column = 1;   % 占第2列
     finished_button.Layout.Column = 2;
     discard_button.Layout.Column = 3;
 
@@ -210,7 +214,6 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
     function close_window()
         % 关闭图形窗口
         close(fig);
-        create_event_info(filepath, TL_a, TL_b, startPoints);
     end
 
     function updateBannedChann()
@@ -272,6 +275,7 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
         plotData(cutEMGData, cutEEGData, filename, TL_a, TL_b, ...
             marks, false, true, bannedEMGList, bannedEEGList);
     end
+
 end
  
 function [newEMGData, newEEGData] = cutData(EMGData, EEGData, filepath, TL_a, TL_b, startPoints, isPeak)
