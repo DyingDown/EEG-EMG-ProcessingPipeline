@@ -6,9 +6,9 @@ function processRawDatas(baseDataFolder)
             continue;
         end
         disp(folders(i).name)
-        if ~strcmp(folders(i).name, 'subj5')
-            continue;
-        end
+        % if ~strcmp(folders(i).name, 'subj5')
+        %     continue;
+        % end
 
         % 拼接完整路径
         fullPath = fullfile(baseDataFolder, folders(i).name);
@@ -27,7 +27,7 @@ function processRawDatas(baseDataFolder)
             for i = 1:length(fileList)
                 fileName = fileList(i).name;  % 获取文件或文件夹的名字
                 filepath = fullfile(originalDataFolders, fileName);  % 获取完整路径
-                fprintf("当前处理的的文件是：%s\n",filepath);
+                fprintf("当前处理的的文件是：%s",filepath);
                 processRawDataFile(filepath, true);
                 
             end

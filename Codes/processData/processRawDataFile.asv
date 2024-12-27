@@ -166,9 +166,9 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
     % view cutted waves
     view_cutted_button = uibutton(grid, 'Text', 'View Parted Figure', 'ButtonPushedFcn', @(btn, event) view_cutted());
     % discard this file
-    finished_button = uibutton(grid, 'Text', 'Mark Finish Permenantly', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file('permentanly mark file' + filename + 'as finished and will never show up again', "finished"));
+    finished_button = uibutton(grid, 'Text', 'Mark Finish Permenantly', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file("permentanly mark this file as finished and will never show up again", "finished"));
 
-    discard_button = uibutton(grid, 'Text', 'Discard this file', 'BackgroundColor', '#c42b1c', 'ButtonPushedFcn', @(btn, event) move_file('remove file ' + filename + ' from original data files', "discard"));
+    discard_button = uibutton(grid, 'Text', 'Discard this file', 'BackgroundColor', '##c42b1c', 'ButtonPushedFcn', @(btn, event) move_file('remove file ' + filename + ' from original data files', "discard"));
     
     submit_button.Layout.Column = 1;  % 占第1列
     close_button.Layout.Column = 2;   % 占第2列
@@ -217,7 +217,7 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
         plotData(EMGData, EEGData, filename, a_input.Value, b_input.Value, startPoints, isPeakPoint, true, str2num(bannedEMGList_input.Value), str2num(bannedEEGList_input.Value));
     end
 
-    function move_file(confirmMessage, folderName)
+    function move_file(confirmMessage)
         % 弹出确认对话框
         choice = uiconfirm(fig, ...
             'This action will' + confirmMessage  + '. Are you sure to do that?', ...
@@ -230,7 +230,7 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
         if strcmp(choice, 'Continue')
             % 如果用户点击“确定”，继续执行操作
 
-            destinateFolder = getParentSibling(filepath, folderName);
+            destinateFolder = getParentSibling(filepath, "discard");
             destinateFilepath = fullfile(destinateFolder, filename + ext);
             fprintf("Destinated moving Folder = %s\n", destinateFilepath);
             movefile(filepath, destinateFilepath);
