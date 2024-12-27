@@ -22,13 +22,15 @@ function processRawDataFile(filepath, isPeakPoint)
     EEGData = [datafile{17:32}];
     [EMGData, EEGData] = filterData(EMGData, EEGData);
     
-    [TL_a, TL_b, startPoints] = modifyStartPoints(EMGData, EEGData, isPeakPoint, filepath);
+    [TL_a, TL_b, startPoints, isDeleted] = modifyStartPoints(EMGData, EEGData, isPeakPoint, filepath);
 
-    create_event_info(filepath, TL_a, TL_b, startPoints);
-
-
-    [cutEMG, cutEEG] = cutData(EMGData, EMGData, filepath, TL_a, TL_b, startPoints, isPeakPoint);
-    saveCuttedData([cutEMG, cutEEG]', filepath);
+    if isDeleted == false
+        create_event_info(filepath, TL_a, TL_b, startPoints);
+    
+    
+        [cutEMG, cutEEG] = cutData(EMGData, EMGData, filepath, TL_a, TL_b, startPoints, isPeakPoint);
+        saveCuttedData([cutEMG, cutEEG]', filepath);
+    end
 end
 
 
@@ -56,7 +58,7 @@ function [EMGData, EEGData] = filterData(EMGData, EEGData)
     EEGData=filter(b,a,EEGData);
 end
 
-function [TL_a, TL_b, startPoints] = modifyStartPoints(EMGData, EEGData, isPeakPoint, filepath)
+function [TL_a, TL_b, startPoints, isDeleted] = modifyStartPoints(EMGData, EEGData, isPeakPoint, filepath)
     % modifyStartPoints Adjustify the start points mannually with plot
     %
     % Inputs
@@ -67,7 +69,7 @@ function [TL_a, TL_b, startPoints] = modifyStartPoints(EMGData, EEGData, isPeakP
     %
     % Author: o_oyao
     % Date: 2024-MM-DD
- 
+
     % 如何之前有默认的打点数据或者TL_a TL_b，则使用之前的
     [filefolder, filename, ext] = fileparts(filepath);
     fprintf("filename=%s\n", filename);
@@ -107,12 +109,12 @@ function [TL_a, TL_b, startPoints] = modifyStartPoints(EMGData, EEGData, isPeakP
     
     plotData(EMGData, EEGData, filename, TL_a, TL_b, startPoints, true, false, bannedEMGList, bannedEEGList);
 
-    [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariables(EMGData, EEGData, TL_a, TL_b, startPoints, filepath, isPeakPoint, bannedEMGList, bannedEEGList);
+    [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList, isDeleted] = inputVariables(EMGData, EEGData, TL_a, TL_b, startPoints, filepath, isPeakPoint, bannedEMGList, bannedEEGList);
     
 end
 
 
-function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariables(EMGData, EEGData, TL_a, TL_b, startPoints, filepath, isPeakPoint, bannedEMGList, bannedEEGList)
+function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList, isDeleted] = inputVariables(EMGData, EEGData, TL_a, TL_b, startPoints, filepath, isPeakPoint, bannedEMGList, bannedEEGList)
     % inputVariables input the TL_a, TL_b
     %
     % Inputs
@@ -120,6 +122,8 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
     %   TL_b         - (int) default TL_b
     %   startPoints  - (array) default startPoints
     %
+
+    isDeleted = false;
 
     [filefolder, filename, ext] = fileparts(filepath);
     
@@ -172,7 +176,7 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
     % discard this file
     finished_button = uibutton(grid, 'Text', 'Mark Finish Permenantly', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file('permentanly mark file ' + filename + ' as finished and will never show up again', "finished"));
 
-    discard_button = uibutton(grid, 'Text', 'Discard this file', 'BackgroundColor', '#c42b1c', 'ButtonPushedFcn', @(btn, event) move_file('remove file ' + filename + ' from original data files', "discard"));
+    discard_button = uibutton(grid, 'Text', 'Discard this file', 'BackgroundColor', '#c42b1c', 'ButtonPushedFcn', @(btn, event) delete_file());
     
     submit_button.Layout.Column = 1;  % 占第1列
     updatetBanned.Layout.Column = 2;  % 跨3列
@@ -276,6 +280,10 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList] = inputVariable
             marks, false, true, bannedEMGList, bannedEEGList);
     end
 
+    function delete_file()
+        move_file('remove file ' + filename + ' from original data files', "discard")
+        isDeleted = true;
+    end
 end
  
 function [newEMGData, newEEGData] = cutData(EMGData, EEGData, filepath, TL_a, TL_b, startPoints, isPeak)
