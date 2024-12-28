@@ -28,7 +28,7 @@ function processRawDataFile(filepath, isPeakPoint)
         create_event_info(filepath, TL_a, TL_b, startPoints);
     
     
-        [cutEMG, cutEEG] = cutData(EMGData, EMGData, filepath, TL_a, TL_b, startPoints, isPeakPoint);
+        [cutEMG, cutEEG] = cutData(EMGData, EEGData, filepath, TL_a, TL_b, startPoints, isPeakPoint);
         saveCuttedData([cutEMG, cutEEG]', filepath);
     end
 end
@@ -68,7 +68,7 @@ function [TL_a, TL_b, startPoints, isDeleted] = modifyStartPoints(EMGData, EEGDa
     %   filepath    - (string) 数据源文件路径
     %
     % Author: o_oyao
-    % Date: 2024-MM-DD
+    % Date: 2024-12-25
 
     % 如何之前有默认的打点数据或者TL_a TL_b，则使用之前的
     [filefolder, filename, ext] = fileparts(filepath);
@@ -286,7 +286,7 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList, isDeleted] = in
     end
 end
  
-function [newEMGData, newEEGData] = cutData(EMGData, EEGData, filepath, TL_a, TL_b, startPoints, isPeak)
+function [cutEMGData, cutEEGData] = cutData(EMGData, EEGData, filepath, TL_a, TL_b, startPoints, isPeak)
     fprintf("Start cutting the Data in to pieces and combine together.\n")
     %% 结果保存-分段且过滤
 
@@ -310,8 +310,10 @@ function [newEMGData, newEEGData] = cutData(EMGData, EEGData, filepath, TL_a, TL
         end
     end
 
-    newEMGData = EMGData(save_idx,:);
-    newEEGData = EEGData(save_idx,:);
+    disp(save_idx)
+
+    cutEMGData = EMGData(save_idx,:);
+    cutEEGData = EEGData(save_idx,:);
 end
 
 function saveCuttedData(combineddata, filepath) 

@@ -1,4 +1,4 @@
-function processRawDatas(baseDataFolder)
+function processRawDatas(baseDataFolder, isPeak)
     folders = dir(baseDataFolder);  % 获取当前目录下的所有文件和文件夹
     for i = 1:length(folders)
         % 跳过 . 和 .. 这两个特殊文件夹
@@ -28,16 +28,10 @@ function processRawDatas(baseDataFolder)
                 fileName = fileList(i).name;  % 获取文件或文件夹的名字
                 filepath = fullfile(originalDataFolders, fileName);  % 获取完整路径
                 fprintf("当前处理的的文件是：%s\n",filepath);
-                processRawDataFile(filepath, true);
+                processRawDataFile(filepath, isPeak);
                 
             end
         end
     end
 
-end
-
-function isMatch = matches_subj_pattern(folderName)
-    % 判断文件夹名字是否符合 subj + 数字 的格式
-    pattern = '^subj\d+$';  % 正则表达式
-    isMatch = ~isempty(regexp(folderName, pattern, 'once'));
 end

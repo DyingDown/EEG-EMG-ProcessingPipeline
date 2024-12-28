@@ -1,0 +1,36 @@
+{
+  "dataBaseFolder" : "D:/Documents/Peng/EEG/Datasets",
+  "startPoint": {
+      "isPeak": true
+  },
+  "artifacts": {
+    "Brain": {
+      "lower_limit": 0,
+      "upper_limit": 0
+    },
+    "Muscle": {
+      "lower_limit": 0.55,
+      "upper_limit": 1
+    },
+    "Eye": {
+      "lower_limit": 0.55,
+      "upper_limit": 1
+    },
+    "Heart": {
+      "lower_limit": 0.55,
+      "upper_limit": 1
+    },
+    "Line Noise": {
+      "lower_limit": 0.55,
+      "upper_limit": 1
+    },
+    "Channel Noise": {
+      "lower_limit": 0.55,
+      "upper_limit": 1
+    },
+    "Other": {
+      "lower_limit": 0.55,
+      "upper_limit": 1
+    }
+  }
+}

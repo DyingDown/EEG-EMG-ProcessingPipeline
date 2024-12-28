@@ -1,0 +1,51 @@
+function [EEG_ICAed, stepFlags] = run_ICA(EEG, parentFolder, setname, flagFile, stepFlags)
+    fprintf("Starting ICA for set %s...\n", setname);
+    saveFolder = fullfile(parentFolder, "set", "afterICA");
+    if ~exist(saveFolder, "dir")
+        mkdir(saveFolder);
+        fprintf("Created folder %s\n", saveFolder);
+    end
+
+    fprintf("ICA set savePath = %s\n", saveFolder);
+    
+
+    % 获取类型为 'EEG' 的通道索引
+    channelIndices = find(strcmp({EEG.chanlocs.type}, 'EEG'));
+    
+    % 验证是否找到通道
+    if isempty(channelIndices)
+        error('No channels of type EEG found.');
+    end
+    
+
+    % 使用找到的通道索引选择
+    EEG_ICAed = pop_select(EEG, 'channel', channelIndices);
+    restLen = 16 - length(stepFlags.badChannels);
+    EEG_ICAed = pop_runica(EEG_ICAed, 'icatype', 'runica', 'extended',1,'interrupt','on','pca', restLen);%因为插值两个坏导
+    EEG_ICAed = pop_iclabel(EEG_ICAed, 'default');
+
+    eeg
+
+    % % === 3. 将 ICA 的结果合并回原始数据 ===
+    % EEG.icaact = EEG_ICAed.icaact;           % 将 ICA 分量的激活数据复制到原始 EEG 数据
+    % EEG.icawinv = EEG_ICAed.icawinv;         % 加权逆矩阵
+    % EEG.icasphere = EEG_ICAed.icasphere;     % 球形矩阵
+    % EEG.icaweights = EEG_ICAed.icaweights;   % ICA 权重矩阵
+    % EEG.icachansind = EEG_ICAed.icachansind; % ICA 参与的通道索引
+
+    % EEG_ICAed = pop_saveset( EEG, 'filename',[setname  '.set'],'filepath', char(saveFolder)); %保存数据
+    % EEG = pop_saveset( EEG, 'filename',[setname  '.set'],'filepath', char(saveFolder)); %保存数据
+
+    % EEG_a = EEG_ICAed; 
+    % for i = 1:8
+    %     EEG_a.data(i,:) = EEG_a.data(i,:)*0;
+    % end
+    pop_eegplot( EEG_ICAed, 1, 1, 1);
+
+
+    stepFlags.runICA = true;
+    save(flagFile, "stepFlags");
+    disp("ICA finished and labled.")
+
+    flag_artifacts(EEG_ICAed, parentFolder, setname, flagFile, stepFlags);
+end
