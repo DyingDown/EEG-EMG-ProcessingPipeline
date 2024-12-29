@@ -29,7 +29,7 @@ function [EEG, stepFlags] = run_ICA(EEG, parentFolder, setname, flagFile, stepFl
     EEG = pop_saveset( EEG, 'filename',[setname  '.set'],'filepath', char(saveFolder)); %保存数据
     % EEG = pop_saveset( EEG, 'filename',[setname  '.set'],'filepath', char(saveFolder)); %保存数据
 
-    pop_eegplot( EEG, 1, 1, 1);
+    % pop_eegplot( EEG, 1, 1, 1);
 
 
     stepFlags.runICA = true;

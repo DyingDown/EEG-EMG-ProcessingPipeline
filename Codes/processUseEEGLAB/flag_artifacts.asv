@@ -99,7 +99,7 @@ function [EEG, stepFlags] =  flag_artifacts(EEG, parentFolder, setname, flagFile
         % 添加显示消息的确认弹窗
         confirmationFig = uifigure('Name', 'Rejection Confirmation', 'Position', [100, 100, 600, 400]);
         gridLayoutConf = uigridlayout(confirmationFig, [4, 1]);
-        msgLabel = uilabel(gridLayoutConf, 'Text', sprintf('Marked components for rejection: [%s]', strjoin(string(rejected_comps), ', ')), 'FontSize', 14, 'HorizontalAlignment', 'center');
+        msgLabel = uilabel(gridLayoutConf, 'Text', sprintf('Marked components for rejection: [%s]', strjoin(string(rejected_comps), ', ') ']'])), 'FontSize', 14, 'HorizontalAlignment', 'center');
         msgLabel.Layout.Row = 1;
 
         % 预览按钮
@@ -133,7 +133,6 @@ function [EEG, stepFlags] =  flag_artifacts(EEG, parentFolder, setname, flagFile
             stepFlags.flagArtifacts = true;
             save(flagFile, "stepFlags");
             disp("Artifacts removed.")
-            close(confirmationFig);  % 确定后关闭确认弹窗
         end
 
         function cancelRejection()

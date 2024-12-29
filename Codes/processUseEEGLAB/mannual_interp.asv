@@ -7,8 +7,7 @@ function [EEG_interp, stepFlags] = mannual_interp(EEG, flagPath, stepFlags)
     %   stepFlags   - (struct) flags struct
     % 
 
-    [~, setname, ~] = fileparts(flagPath);
-    fprintf("Start mannual interpolation for set %s...\n", setname);
+    fprintf("Start mannual interpolation for set %s...\n", EEG.setname);
 
 
     EEG_a = EEG; 
@@ -30,7 +29,7 @@ function [EEG_interp, stepFlags] = mannual_interp(EEG, flagPath, stepFlags)
     gridLayout.ColumnWidth = {'1x', '1x', '1x', '1x', '1x', '1x', '1x', '1x'};  % 列等宽
     
     % 添加提示文字
-    textLabel = uilabel(gridLayout, 'Text', sprintf('Select the bad channels for set %s', setname), ...
+    textLabel = uilabel(gridLayout, 'Text', sprintf('Select the bad channels', ...
                     'FontSize', 25, 'FontWeight', 'bold', 'HorizontalAlignment', 'center');
 
     % 将标签设置为跨越整行（两列）
