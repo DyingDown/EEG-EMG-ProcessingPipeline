@@ -1,4 +1,5 @@
 function processRawDataFile(filepath, isPeakPoint)
+    global runningFunction;
     fprintf("Loading data from %s\n", filepath);
     fid = fopen(filepath);
     if fid == -1
@@ -23,6 +24,10 @@ function processRawDataFile(filepath, isPeakPoint)
     [EMGData, EEGData] = filterData(EMGData, EEGData);
     
     [TL_a, TL_b, startPoints, isDeleted] = modifyStartPoints(EMGData, EEGData, isPeakPoint, filepath);
+
+    if isempty(runningFunction) || ~strcmp(runningFunction.Name, "Pnt Man Corr")
+        return;
+    end
 
     if isDeleted == false
         create_event_info(filepath, TL_a, TL_b, startPoints);
@@ -309,8 +314,6 @@ function [cutEMGData, cutEEGData] = cutData(EMGData, EEGData, filepath, TL_a, TL
             end
         end
     end
-
-    disp(save_idx)
 
     cutEMGData = EMGData(save_idx,:);
     cutEEGData = EEGData(save_idx,:);

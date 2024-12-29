@@ -1,6 +1,8 @@
+clear
 
-global config; 
+global config runningFunction; 
 config = load_config();
+
 
 % processRawDatas(config.dataBaseFolder, config.startPoint.isPeak);
 % eeglab_process(config.dataBaseFolder);
@@ -8,7 +10,7 @@ config = load_config();
 simpleGridUI();
 
 function simpleGridUI
-    global config;
+    global config runningFunction;
     % Create the main UI figure
     hFig = uifigure('Name', 'Grid UI Example', 'Position', [500, 300, 400, 300]);
 
@@ -19,8 +21,8 @@ function simpleGridUI
     runningFunction = []; % Keeps track of the currently running function
 
     % Create the buttons for specific tasks
-    btn1 = uibutton(gLayout, 'Text', 'Manual Correction', ...
-        'ButtonPushedFcn', @(~, ~)executeFunction(@manualCorrection, 'Manual Correction'));
+    btn1 = uibutton(gLayout, 'Text', 'Point Info Man Corr', ...  % Changed to 'Pnt Man Corr'
+        'ButtonPushedFcn', @(~, ~)executeFunction(@manualCorrection, 'Pnt Man Corr'));  % Adjust function name here
 
     btn2 = uibutton(gLayout, 'Text', 'EEGLAB Preprocessing', ...
         'ButtonPushedFcn', @(~, ~)executeFunction(@eeglabPreprocessing, 'EEGLAB Preprocessing'));
@@ -94,22 +96,22 @@ function simpleGridUI
 
     % Dummy functions for the tasks
     function manualCorrection
-        disp('Performing manual correction...');
-        processRawDatas(config.dataBaseFolder, config.startPoint.isPeak);
+        disp('Performing Pnt Man Corr...');
+        processRawDatas(config.dataBaseFolder, config.startPoint.isPeak);  % Assuming this function exists elsewhere
     end
 
     function eeglabPreprocessing
         disp('Running EEGLAB preprocessing...');
-        eeglab_process(config.dataBaseFolder);
+        eeglab_process(config.dataBaseFolder);  % Assuming this function exists elsewhere
     end
 
     function calculateData
         disp('Calculating data...');
-        calcC3C4(config.dataBaseFolder);
+        calcC3C4(config.dataBaseFolder);  % Assuming this function exists elsewhere
     end
 
     function plotData
         disp('Plotting data...');
-        plot_cohere(config.dataBaseFolder);
+        plot_cohere(config.dataBaseFolder);  % Assuming this function exists elsewhere
     end
 end

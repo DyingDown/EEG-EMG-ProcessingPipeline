@@ -9,6 +9,13 @@ function [EEG_interp, stepFlags] = mannual_interp(EEG, flagPath, stepFlags)
 
     fprintf("Start mannual interpolation for set %s...\n", EEG.setname);
 
+
+    EEG_a = EEG; 
+    for i = 1:8
+        EEG_a.data(i,:) = EEG_a.data(i,:)*0;
+    end
+    pop_eegplot( EEG_a, 1, 1, 1);
+
     eegFilename = EEG.filename;
     eegFilepath = EEG.filepath;
 
@@ -105,6 +112,7 @@ function [EEG_interp, stepFlags] = mannual_interp(EEG, flagPath, stepFlags)
             EEG_interp = pop_interp(EEG, selectedIndices, 'spherical'); % 执行插值操作
             disp('Interpolation performed for selected channels.');
         else
+            EEG_interp = EEG;
             disp('No channels selected for interpolation.');
         end
         finnalBadChans = selectedIndices;

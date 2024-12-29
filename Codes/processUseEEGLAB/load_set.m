@@ -65,6 +65,7 @@ function [EEG, stepFlags] = load_set(baseDataFolder, fullPath, filepath, fileNam
 
     % 读取事件数据
     events_data = readtable(events_path, 'Delimiter', '\t', 'ReadVariableNames', false);
+    disp(events_data)
     
     % 获取数据列
     type = events_data{:, 1};     % 第一列：事件类型
@@ -96,12 +97,6 @@ function [EEG, stepFlags] = load_set(baseDataFolder, fullPath, filepath, fileNam
     save(flagPath, "stepFlags");
 
     % pop_eegplot( EEG, 1, 1, 1); 
-
-    EEG_a = EEG; 
-    for i = 1:8
-        EEG_a.data(i,:) = EEG_a.data(i,:)*0;
-    end
-    pop_eegplot( EEG_a, 1, 1, 1);
 
     stepFlags.loadSet = true;
     save(flagPath, "stepFlags");

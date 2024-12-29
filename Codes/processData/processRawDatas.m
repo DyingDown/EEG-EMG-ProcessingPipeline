@@ -1,4 +1,5 @@
 function processRawDatas(baseDataFolder, isPeak)
+    global runningFunction;
     folders = dir(baseDataFolder);  % 获取当前目录下的所有文件和文件夹
     for i = 1:length(folders)
         % 跳过 . 和 .. 这两个特殊文件夹
@@ -14,6 +15,7 @@ function processRawDatas(baseDataFolder, isPeak)
         fullPath = fullfile(baseDataFolder, folders(i).name);
         % 判断是否是文件夹，并且文件夹名符合条件
         if folders(i).isdir && matches_subj_pattern(folders(i).name)
+
             fprintf('符合条件的文件夹：%s\n', fullPath);
             % 如果满足条件，对其子文件夹递归调用
             % traverse_folders(fullPath);
@@ -25,6 +27,9 @@ function processRawDatas(baseDataFolder, isPeak)
             fileList = fileList(~ismember({fileList.name}, {'.', '..'}));
 
             for i = 1:length(fileList)
+                if isempty(runningFunction) || ~strcmp(runningFunction.Name, "Pnt Man Corr")
+                    return;
+                end
                 fileName = fileList(i).name;  % 获取文件或文件夹的名字
                 filepath = fullfile(originalDataFolders, fileName);  % 获取完整路径
                 fprintf("当前处理的的文件是：%s\n",filepath);
