@@ -82,17 +82,15 @@ function wCMC_C3C4_sitstand(eventChar, TL, subj_no, setPath)
     
            
     end
-    
-    results.TL = TL;
 
     % 分别保存C3和C4的结果
     % save_folder = "D:/Documents/Peng/EGG/Datasets/CMCresult_lowerLimb/" + subj_no;
-    save_folder = fullfile(config.dataBaseFolder, "CMCresult_lowerLimb", subj_no, eventChar);
+    save_folder = fullfile(config.dataBaseFolder, "CMCresult_lowerLimb", subj_no);
     if ~exist(save_folder, "dir")
         mkdir(save_folder)
     end
 
-    save_path = fullfile(save_folder, filename + "_" + eventChar + "_CMCvalues.mat");
+    save_path = fullfile(save_folder, filename + ".mat");
     save(save_path, 'results');
     
     fprintf("Saved results for %s %s\n", subj_no, filename);

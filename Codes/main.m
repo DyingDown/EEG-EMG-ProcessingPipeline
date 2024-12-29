@@ -110,6 +110,6 @@ function simpleGridUI
 
     function plotData
         disp('Plotting data...');
-        pause(3); % Simulate task duration
+        plot_cohere(config.dataBaseFolder);
     end
 end
