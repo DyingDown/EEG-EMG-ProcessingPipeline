@@ -3,6 +3,7 @@
   "startPoint": {
       "isPeak": true
   },
+  "Fs": 1000,
   "artifacts": {
     "Brain": {
       "lower_limit": 0,

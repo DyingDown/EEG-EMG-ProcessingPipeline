@@ -105,7 +105,7 @@ function simpleGridUI
 
     function calculateData
         disp('Calculating data...');
-        pause(3); % Simulate task duration
+        calcC3C4(config.dataBaseFolder);
     end
 
     function plotData
