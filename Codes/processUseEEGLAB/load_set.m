@@ -102,6 +102,6 @@ function [EEG, stepFlags] = load_set(baseDataFolder, fullPath, filepath, fileNam
     save(flagPath, "stepFlags");
     disp("Marked load set as done");
 
-    % figure;
-    % topoplot([], EEG.chanlocs, 'electrodes', 'labels');
+    figure;
+    topoplot([], EEG.chanlocs, 'electrodes', 'labels');
 end
