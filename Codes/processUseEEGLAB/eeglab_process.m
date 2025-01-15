@@ -23,9 +23,9 @@ function eeglab_process(baseDataFolder)
             continue;
         end
         disp(class(folders(j).name))
-        % if ~strcmp(folders(j).name, 'subj5')
-        %     continue;
-        % end
+        if ~strcmp(folders(j).name, 'subj1')
+            continue;
+        end
         
     
         % 拼接完整路径

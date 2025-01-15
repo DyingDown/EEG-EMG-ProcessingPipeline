@@ -11,7 +11,7 @@ num_experiments = 4
 
 # Store the average values of within-group variables
 #被试现在有两人
-subject = [1,2]
+subject = [5]
 file_path = 'D:/Documents/Peng/zhengda/CMCresult_lowerLimb/CMCvalues/'
 
 # Two types of motion: 'a' and 'b'
