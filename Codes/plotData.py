@@ -47,7 +47,6 @@ gamma_indices = np.where((Freq >= np.min(gamma_freq)) & (Freq < np.max(gamma_fre
 delta_indices = np.where((Freq >= np.min(delta_freq)) & (Freq < np.max(delta_freq)))[0]
 theta_indices = np.where((Freq >= np.min(theta_freq)) & (Freq < np.max(theta_freq)))[0]
 
-print(alpha_indices)
 files_in_folder = []
 for file_name in os.listdir(base_folder):
     file_path = os.path.join(base_folder, file_name)
@@ -80,17 +79,20 @@ for data_file in files_in_folder:
     for name1 in EEGsch_name:
         for name2 in EMGsch_name:
             #1代表对第二个维度处理
-            CMC['wcohere_'+name2+'_'+name1]['s0'+str(data_file['prefix'])] = np.mean(data['wcohere_'+name1+'_'+name2], axis=1)
+            # print('wcohere_'+name1+'_'+name2)
+            # print(data['wcohere_'+name1+'_'+name2][0][0].shape);
+            CMC['wcohere_'+name2+'_'+name1]['s0'+str(test)] = np.mean(data['wcohere_'+name1+'_'+name2][0][0], axis=1)
     
     for k in range(CMC_num):
-        alpha_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][0][alpha_indices])
-        beta_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][0][beta_indices])
-        gamma_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][0][gamma_indices])
-        delta_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][0][delta_indices])
-        theta_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][0][theta_indices])
+        alpha_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][alpha_indices])
+        beta_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][beta_indices])
+        gamma_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][gamma_indices])
+        delta_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][delta_indices])
+        theta_mean = np.mean(CMC[list(CMC.keys())[k]]['s0'+str(test)][theta_indices])
         subject_means[k, test-1, :] = [alpha_mean, beta_mean, gamma_mean, delta_mean, theta_mean]
-        
-print(subject_means[0])
+        # print(CMC[list(CMC.keys())[k]]['s0'+str(test)][0].shape)
+
+
 
 # plot_path = f'D:/Documents/Peng/zhengda/CMCresult_lowerLimb/CMC_Freq/subj{subject_id}/{motion}/'
 plot_path = f'{base_folder}/plots/'
@@ -116,14 +118,37 @@ for j in range(CMC_num):
     plt.savefig(plot_path + f'{tit2}.png')
 
     plt.show()
-    # plt.figure()
-    # temp_max = np.zeros((4, 1))
-    # for i in range(1, num_experiments + 1):
-    #     x = Freq
-    #     y = CMC[list(CMC.keys())[j]]['s0'+str(i)][0]
-    #     plt.plot(x, y, label=f's{i:d}')
-    #     temp_max[i-1,0] = np.max(y)
-    # Max = np.max(temp_max)
+    
+    
+    plt.figure()
+    temp_max = np.zeros((4, 1))
+    for i in range(1, num_experiments + 1):
+        x = Freq
+        y = CMC[list(CMC.keys())[j]]['s0'+str(i)]
+        plt.plot(x, y, label=f's{i:d}')
+        temp_max[i-1,0] = np.max(y)
+    Max = np.max(temp_max)
+    # 优化3: 画直线和文本
+    freqs = {
+        'α': alpha_freq,
+        'β': beta_freq,
+        'γ': gamma_freq,
+        'δ': delta_freq,
+        'θ': theta_freq
+    }
+
+    colors = {
+        'α': 'red',
+        'β': 'blue',
+        'γ': 'green',
+        'δ': 'orange',
+        'θ': 'purple'
+    }
+
+    for label, freq in freqs.items():
+        plt.axvline(x=freq[0], linestyle='--', color=colors[label])
+        plt.axvline(x=freq[-1], linestyle='--', color=colors[label])
+        plt.text(freq[0], Max, label, ha='left', va='bottom')
     # plt.axvline(x=alpha_freq[0], linestyle='--', color='red')
     # plt.axvline(x=alpha_freq[-1], linestyle='--', color='red')
     # plt.text(alpha_freq[0], Max, 'α', ha='left', va='bottom')
@@ -144,14 +169,14 @@ for j in range(CMC_num):
     # plt.axvline(x=theta_freq[-1], linestyle='--', color='purple')
     # plt.text(theta_freq[0], Max, 'θ', ha='left', va='bottom')
     
-    # tit1 = f'Freq-subj{base_name}-{motion}-{list(CMC.keys())[j]}'
-    # plt.title(f'Freq-subj{base_name}-{motion}-{list(CMC.keys())[j]}')
-    # plt.xlabel('Frequency')
-    # plt.ylabel('CMC')
-    # plt.xlim(0, 50)
-    # plt.legend()
-    # plt.show()
-    # plt.savefig(plot_path + f'{tit1}.png')
+    tit1 = f'Freq-subj{base_name}-{motion}-{list(CMC.keys())[j]}'
+    plt.title(f'Freq-subj{base_name}-{motion}-{list(CMC.keys())[j]}')
+    plt.xlabel('Frequency')
+    plt.ylabel('CMC')
+    plt.xlim(0, 50)
+    plt.legend()
+    plt.show()
+    plt.savefig(plot_path + f'{tit1}.png')
             
 
 # save to excel
