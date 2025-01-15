@@ -34,7 +34,7 @@ function simpleGridUI
 
     % New button for plotting average data, placed in the third row
     btn5 = uibutton(gLayout, 'Text', 'Plot Coh Avg', ...
-        'ButtonPushedFcn', @(~, ~)executeFunction(@plotCohAvg, 'Plot Coh Avg'));
+        'ButtonPushedFcn', @(~, ~)executeFunction(@plotCohAvgG, 'Plot Coh Avg'));
 
     % Create a terminate button
     terminateBtn = uibutton(gLayout, 'Text', 'Terminate', 'ButtonPushedFcn', @terminateCurrentFunction);
@@ -118,10 +118,8 @@ function simpleGridUI
         plot_cohere(config.dataBaseFolder);  % Assuming this function exists elsewhere
     end
 
-    % New function for plotCohAvg
-    function plotCohAvg
-        plotCohAvg()
+    function plotCohAvgG
         disp('Plotting Coh Avg...');
-        % Assuming the plotCohAvg function is defined elsewhere
+        plotCohAvg()
     end
 end
