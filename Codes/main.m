@@ -3,7 +3,6 @@ clear
 global config runningFunction; 
 config = load_config();
 
-
 % processRawDatas(config.dataBaseFolder, config.startPoint.isPeak);
 % eeglab_process(config.dataBaseFolder);
 
@@ -12,10 +11,10 @@ simpleGridUI();
 function simpleGridUI
     global config runningFunction;
     % Create the main UI figure
-    hFig = uifigure('Name', 'Grid UI Example', 'Position', [500, 300, 400, 300]);
+    hFig = uifigure('Name', 'Grid UI Example', 'Position', [500, 300, 400, 400]);  % Increase height for 4 rows
 
-    % Create the buttons grid layout
-    gLayout = uigridlayout(hFig, [3, 2], 'ColumnWidth', {'1x', '1x'}, 'RowHeight', {'1x', '1x', '1x'});
+    % Create the buttons grid layout (change the rows to 4)
+    gLayout = uigridlayout(hFig, [4, 2], 'ColumnWidth', {'1x', '1x'}, 'RowHeight', {'1x', '1x', '1x', '1x'});  % Change rows to 4
 
     % Define the running function handle
     runningFunction = []; % Keeps track of the currently running function
@@ -32,6 +31,10 @@ function simpleGridUI
 
     btn4 = uibutton(gLayout, 'Text', 'Plot Data', ...
         'ButtonPushedFcn', @(~, ~)executeFunction(@plotData, 'Plot Data'));
+
+    % New button for plotting average data, placed in the third row
+    btn5 = uibutton(gLayout, 'Text', 'Plot Coh Avg', ...
+        'ButtonPushedFcn', @(~, ~)executeFunction(@plotCohAvg, 'Plot Coh Avg'));
 
     % Create a terminate button
     terminateBtn = uibutton(gLayout, 'Text', 'Terminate', 'ButtonPushedFcn', @terminateCurrentFunction);
@@ -112,6 +115,7 @@ function simpleGridUI
 
     function plotData
         disp('Plotting data...');
-        plot_cohere(config.dataBaseFolder);  % Assuming this function exists elsewhere
+         plotCohAvg();  % Assuming this function exists elsewhere
     end
+
 end

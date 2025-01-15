@@ -1,5 +1,6 @@
 {
   "dataBaseFolder" : "D:/Documents/Peng/EEG/Datasets",
+  "avgDatasFolder" : "D:/Documents/Peng/EEG/Datasets/CMCresult_lowerLimb",
   "startPoint": {
       "isPeak": true
   },

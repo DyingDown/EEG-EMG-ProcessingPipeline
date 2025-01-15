@@ -12,7 +12,7 @@ function [wcohere, ax_0, ay_0,scale] = calcCMC_original(x,y,N,n,f)
                 'Mother','Morlet', ...
                 'MaxScale',[],...   %a more simple way to specify J1
               'Cycles',-1);
-    % Args=parseArgs(varargin,Args,{'BlackandWhite'});
+    % Args=parseArgs(varargin,Args,{'BlackandWhite'});z
     if isempty(Args.J1)
         if isempty(Args.MaxScale)
             Args.MaxScale=(n*.17)*2*dt; %auto maxscale
