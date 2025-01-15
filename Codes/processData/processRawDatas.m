@@ -7,9 +7,9 @@ function processRawDatas(baseDataFolder, isPeak)
             continue;
         end
         disp(folders(i).name)
-        if ~strcmp(folders(i).name, 'subj1')
-            continue;
-        end
+        % if ~strcmp(folders(i).name, 'subj1')
+        %     continue;
+        % end
 
         % 拼接完整路径
         fullPath = fullfile(baseDataFolder, folders(i).name);
