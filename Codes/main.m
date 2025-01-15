@@ -115,7 +115,13 @@ function simpleGridUI
 
     function plotData
         disp('Plotting data...');
-         plotCohAvg();  % Assuming this function exists elsewhere
+        plot_cohere(config.dataBaseFolder);  % Assuming this function exists elsewhere
     end
 
+    % New function for plotCohAvg
+    function plotCohAvg
+        plotCohAvg()
+        disp('Plotting Coh Avg...');
+        % Assuming the plotCohAvg function is defined elsewhere
+    end
 end
