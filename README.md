@@ -1,5 +1,7 @@
 # User Manual
 
+中文版本手册在这里：https://dyingdown.github.io/2025/01/18/EEG-EMG-ProcessingPipeline%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E/
+
 ## Data Description
 
 This tool is designed for processing data in `.txt` format, where EEG and EMG data are mixed. The experiment involves only two events, **a** and **b**, with the data formatted as follows:
