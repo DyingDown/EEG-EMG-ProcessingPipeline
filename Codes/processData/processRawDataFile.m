@@ -179,7 +179,7 @@ function [TL_a, TL_b, startPoints, bannedEMGList, bannedEEGList, isDeleted] = in
     % 创建按钮：关闭表单和图形窗口
     close_button = uibutton(grid, 'Text', 'Close', 'BackgroundColor', '#2b75a6' ,'ButtonPushedFcn', @(btn, event) close_window());
     % discard this file
-    finished_button = uibutton(grid, 'Text', 'Mark Finish Permenantly', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file('permentanly mark file ' + filename + ' as finished and will never show up again', "finished"));
+    finished_button = uibutton(grid, 'Text', 'Mark Finish Permanently', 'BackgroundColor', '#77ac30', 'ButtonPushedFcn', @(btn, event) move_file('permentanly mark file ' + filename + ' as finished and will never show up again', "finished"));
 
     discard_button = uibutton(grid, 'Text', 'Discard this file', 'BackgroundColor', '#c42b1c', 'ButtonPushedFcn', @(btn, event) delete_file());
     

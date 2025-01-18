@@ -175,8 +175,8 @@ for j in range(CMC_num):
     plt.ylabel('CMC')
     plt.xlim(0, 50)
     plt.legend()
-    plt.show()
     plt.savefig(plot_path + f'{tit1}.png')
+    plt.show()
             
 
 # save to excel
